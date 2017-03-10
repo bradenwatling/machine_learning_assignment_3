@@ -10,7 +10,7 @@ if __name__ == '__main__':
 
     x_in = tf.placeholder(tf.float32)
 
-    K = 3
+    K = 1
     B = data.shape[0]
     D = data.shape[1]
     learning_rate = 0.05
