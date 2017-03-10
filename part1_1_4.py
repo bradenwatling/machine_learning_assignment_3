@@ -1,20 +1,29 @@
 import tensorflow as tf
 import numpy as np
 import matplotlib.pyplot as plt
+import math
 
 if __name__ == '__main__':
     # Load the two-class notMNIST dataset
     data = np.load('data2D.npy')
 
     tf.set_random_seed(521)
+    np.random.seed(521)
 
     x_in = tf.placeholder(tf.float32)
 
-    for K in range(1, 6):
-        B = data.shape[0]
-        D = data.shape[1]
-        learning_rate = 0.05
+    B = data.shape[0]
+    D = data.shape[1]
+    learning_rate = 0.05
 
+    randIndx = np.arange(len(data))
+    np.random.shuffle(randIndx)
+    data = data[randIndx]
+    validIndex = int(math.ceil(B * 2 / 3))
+    trainData = data[:validIndex]
+    validData = data[validIndex:]
+
+    for K in range(1, 6):
         # Create a [K, D] variable to hold the means initialized with a Gaussian
         means = tf.Variable(tf.random_normal([K, D]), dtype=tf.float32)
 
@@ -43,20 +52,16 @@ if __name__ == '__main__':
         init = tf.global_variables_initializer()
         sess.run(init)
 
-        losses = []
         for j in range(200):
-            _, current_loss = sess.run([optimizer, loss], feed_dict={ x_in:data })
-            losses.append(current_loss)
+            sess.run([optimizer], feed_dict={ x_in:trainData })
 
-        print('Final loss: ' + str(losses[-1]))
+        validLoss = sess.run([loss], feed_dict={ x_in:validData })[0]
 
-        cluster_ids, counts = sess.run([clusters, cluster_counts], feed_dict={ x_in:data })
-        for i in range(cluster_ids.size):
-            print('Cluster ' + str(cluster_ids[i]) + ': ' + str(100. * counts[i] / B) + '%')
+        print('Validation loss for k=' + str(K) + ': ' + str(validLoss))
 
-        x = data[:, [0]]
-        y = data[:, [1]]
-        assignments = sess.run([cluster_assignments], feed_dict={ x_in:data })[0]
+        x = trainData[:, [0]]
+        y = trainData[:, [1]]
+        assignments = sess.run([cluster_assignments], feed_dict={ x_in:trainData })[0]
 
         estimated_means = means.eval(sess)
         means_x = estimated_means[:, [0]]
@@ -65,10 +70,15 @@ if __name__ == '__main__':
         plt.figure()
         plt.scatter(x, y, c=assignments, s=20)
         plt.scatter(means_x, means_y, c='r', s=40)
-        plt.title('2D Scatter Plot of Cluster Assignments k=' + str(K))
+        plt.title('2D Scatter Plot of Training Cluster Assignments k=' + str(K))
+
+        x = validData[:, [0]]
+        y = validData[:, [1]]
+        assignments = sess.run([cluster_assignments], feed_dict={ x_in:validData })[0]
 
         plt.figure()
-        plt.plot(losses)
-        plt.title('Loss vs. Number of Updates k=' + str(K))
+        plt.scatter(x, y, c=assignments, s=20)
+        plt.scatter(means_x, means_y, c='r', s=40)
+        plt.title('2D Scatter Plot of Validation Cluster Assignments k=' + str(K))
 
     plt.show()
