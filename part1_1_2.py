@@ -62,12 +62,12 @@ if __name__ == '__main__':
     means_x = estimated_means[:, [0]]
     means_y = estimated_means[:, [1]]
 
-    plt.figure(1)
+    plt.figure()
     plt.scatter(x, y, c=assignments, s=20)
     plt.scatter(means_x, means_y, c='r', s=40)
     plt.title('2D Scatter Plot of Cluster Assignments k=' + str(K))
 
-    plt.figure(2)
+    plt.figure()
     plt.plot(losses)
     plt.title('Loss vs. Number of Updates k=' + str(K))
     plt.show()
