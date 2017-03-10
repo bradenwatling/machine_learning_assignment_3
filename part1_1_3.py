@@ -10,7 +10,7 @@ if __name__ == '__main__':
 
     x_in = tf.placeholder(tf.float32)
 
-    K = 1
+    K = 3
     B = data.shape[0]
     D = data.shape[1]
     learning_rate = 0.05
@@ -65,9 +65,9 @@ if __name__ == '__main__':
     plt.figure(1)
     plt.scatter(x, y, c=assignments, s=20)
     plt.scatter(means_x, means_y, c='r', s=40)
-    plt.title('2D Scatter Plot of Cluster Assignments')
+    plt.title('2D Scatter Plot of Cluster Assignments k=' + str(K))
 
     plt.figure(2)
     plt.plot(losses)
-    plt.title('Loss vs. Number of Updates')
+    plt.title('Loss vs. Number of Updates k=' + str(K))
     plt.show()
