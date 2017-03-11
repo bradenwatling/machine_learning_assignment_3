@@ -19,9 +19,9 @@ if __name__ == '__main__':
         # Create a [K, D] variable to hold the means initialized with a Gaussian
         means = tf.Variable(tf.random_normal([K, D]), dtype=tf.float32)
         # Create a [K] variable to hold the standard deviations
-        stddevs = tf.Variable(tf.random_normal([K], dtype=tf.float32))
+        stddevs = tf.Variable(tf.ones([K], dtype=tf.float32))
         # Create a [K] variable to hold the mixing coefficients
-        mixes = tf.Variable(tf.random_normal([K], dtype=tf.float32))
+        mixes = tf.Variable(tf.ones([K], dtype=tf.float32) / K)
 
         # Make x a [B, 1, D] tensor
         x = tf.expand_dims(x_in, 1)
@@ -31,8 +31,23 @@ if __name__ == '__main__':
         # Summing over the outer dimension gives [B, K]
         squared_diff = tf.reduce_sum(tf.square(x - means), -1)
 
+        # pi_k / (2 * pi * sigma_k ^ 2) ^ (D / 2)
+        # Shape [K]
+        coefficient = mixes * tf.pow(2 * math.pi * tf.square(stddevs), -D / 2.)
+
+        # -1 / (2 * sigma_k ^ 2) * (x - mu_k) ^ T * (x - mu_k) 
+        # Shape [B, K]
+        exponent = -squared_diff / (2 * tf.square(stddevs))
+
         # Calculate the likelihood P(x|z=k)=N(x|mu_k, sigma_k^2)
-        likelihood = tf.pow(2 * math.pi, D / 2) * tf.pow(stddevs, D) * tf.exp(-squared_diff / (2 * tf.square(stddevs)))
+        # Shape [B, K]
+        likelihood = tf.log(coefficient) + exponent
+
+        # Calculate the posterior distribution over all data points
+        # Shape [B, K]
+        posterior = likelihood - tf.reduce_logsumexp(likelihood, -1, True)
+
+        loss = -tf.reduce_sum(posterior)
 
         optimizer = tf.train.AdamOptimizer(learning_rate, beta1=0.9, beta2=0.99, epsilon=1e-5).minimize(loss)
 
@@ -45,15 +60,15 @@ if __name__ == '__main__':
             _, current_loss = sess.run([optimizer, loss], feed_dict={ x_in:data })
             losses.append(current_loss)
 
-        print('Final loss: ' + str(losses[-1]))
+        print("Mixes: " + str(mixes.eval(sess)))
+        print("Means: " + str(means.eval(sess)))
+        print("stddevs: " + str(stddevs.eval(sess)))
 
-        cluster_ids, counts = sess.run([clusters, cluster_counts], feed_dict={ x_in:data })
-        for i in range(cluster_ids.size):
-            print('Cluster ' + str(cluster_ids[i]) + ': ' + str(100. * counts[i] / B) + '%')
+        print('Final loss: ' + str(losses[-1]))
 
         x = data[:, [0]]
         y = data[:, [1]]
-        assignments = sess.run([cluster_assignments], feed_dict={ x_in:data })[0]
+        assignments = sess.run(tf.argmax(posterior, -1), feed_dict={ x_in:data })
 
         estimated_means = means.eval(sess)
         means_x = estimated_means[:, [0]]
