@@ -11,17 +11,19 @@ if __name__ == '__main__':
 
     x_in = tf.placeholder(tf.float32)
 
-    for K in range(3, 6):
+    for K in range(1, 6):
         B = data.shape[0]
         D = data.shape[1]
         learning_rate = 0.05
 
         # Create a [K, D] variable to hold the means initialized with a Gaussian
         means = tf.Variable(tf.random_normal([K, D]), dtype=tf.float32)
-        # Create a [K] variable to hold the standard deviations
+
+        # Create a [K] variable to hold the variances
         variance = tf.Variable(tf.zeros([K], dtype=tf.float32))
         # Constrain the variance to [0, inf)
         variance = tf.exp(variance)
+
         # Create a [K] variable to hold the mixing coefficients
         mixes = tf.Variable(tf.ones([K], dtype=tf.float32) / K)
         # Constrain the mixing coefficients to sum_k(pi_k) = 1 and take the log
@@ -35,19 +37,42 @@ if __name__ == '__main__':
         # Summing over the outer dimension gives [B, K]
         squared_diff = tf.reduce_sum(tf.square(x - means), -1)
 
+        # The coefficient of the Gaussian
         # 1 / (2 * pi * sigma_k ^ 2) ^ (D / 2)
         # Shape [K]
         coefficient = tf.pow(2 * math.pi * variance, -D / 2.)
 
+        # The exponent of the Gaussian
         # -1 / (2 * sigma_k ^ 2) * (x - mu_k) ^ T * (x - mu_k) 
         # Shape [B, K]
         exponent = -squared_diff / (2 * variance)
 
-        # Calculate the likelihood P(x|z=k)=N(x|mu_k, sigma_k^2)
+        # Calculate the log likelihood log(P(x|z=k))
         # Shape [B, K]
-        marginal_log_likelihood = tf.reduce_logsumexp(log_pi + tf.log(coefficient) + exponent, -1)
+        log_likelihood = tf.log(coefficient) + exponent
 
+        # Calculate the mixed log likelihood log(P(x|z=k) * P(z=k)) = log(pi_k) + log_likelihood 
+        # Shape [B, K]
+        mixed_log_likelihood = log_pi + log_likelihood
+
+        # Calculate the log posterior log(P(z=k|x)) using Baye's rule
+        # Keep the outer dimension so we can broadcast across the outer dimension of mixed_log_likelihood
+        # The posterior distribution will be used to determine which cluster a given point belongs to
+        # Shape [B, K]
+        log_posterior = mixed_log_likelihood - tf.reduce_logsumexp(mixed_log_likelihood, -1, True)
+
+        # Calculate the marginal log likelihood log(P(X))
+        # Shape [B]
+        marginal_log_likelihood = tf.reduce_logsumexp(log_pi + log_likelihood, -1)
+
+        # Sum over all data points to determine the loss
+        # Shape [1]
         loss = -tf.reduce_sum(marginal_log_likelihood)
+
+        # Determine the assignments to each cluster
+        cluster_assignments = tf.argmax(log_posterior, -1)
+        # Determine the count for each cluster
+        clusters, _, cluster_counts = tf.unique_with_counts(cluster_assignments)
 
         optimizer = tf.train.AdamOptimizer(learning_rate, beta1=0.9, beta2=0.99, epsilon=1e-5).minimize(loss)
 
@@ -60,18 +85,15 @@ if __name__ == '__main__':
             _, current_loss = sess.run([optimizer, loss], feed_dict={ x_in:data })
             losses.append(current_loss)
 
-        print("Mixes: " + str(sess.run(log_pi, feed_dict={ x_in:data })))
-        print("Means: " + str(means.eval(sess)))
-        print("variance: " + str(sess.run(variance, feed_dict={ x_in:data })))
-
         print('Final loss: ' + str(losses[-1]))
+
+        cluster_ids, counts = sess.run([clusters, cluster_counts], feed_dict={ x_in:data })
+        for i in range(cluster_ids.size):
+            print('Cluster ' + str(cluster_ids[i]) + ': ' + str(100. * counts[i] / B) + '%')
 
         x = data[:, [0]]
         y = data[:, [1]]
-        assignments = sess.run(tf.argmax(marginal_log_likelihood, -1), feed_dict={ x_in:data })
-
-        print(assignments)
-        print(assignments.shape)
+        assignments = sess.run(cluster_assignments, feed_dict={ x_in:data })
 
         estimated_means = means.eval(sess)
         means_x = estimated_means[:, [0]]
