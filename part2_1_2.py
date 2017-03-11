@@ -1,6 +1,7 @@
 import tensorflow as tf
 import numpy as np
 import matplotlib.pyplot as plt
+import math
 
 if __name__ == '__main__':
     # Load the two-class notMNIST dataset
@@ -25,7 +26,13 @@ if __name__ == '__main__':
         # Make x a [B, 1, D] tensor
         x = tf.expand_dims(x_in, 1)
 
+        # Take square of x - means and sum over outer dimension
+        # [B, 1, D] - [K, D] = [B, K, D]
+        # Summing over the outer dimension gives [B, K]
+        squared_diff = tf.reduce_sum(tf.square(x - means), -1)
 
+        # Calculate the likelihood P(x|z=k)=N(x|mu_k, sigma_k^2)
+        likelihood = tf.pow(2 * math.pi, D / 2) * tf.pow(stddevs, D) * tf.exp(-squared_diff / (2 * tf.square(stddevs)))
 
         optimizer = tf.train.AdamOptimizer(learning_rate, beta1=0.9, beta2=0.99, epsilon=1e-5).minimize(loss)
 
