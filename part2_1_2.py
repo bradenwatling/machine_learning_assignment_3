@@ -20,9 +20,9 @@ if __name__ == '__main__':
         means = tf.Variable(tf.random_normal([K, D]), dtype=tf.float32)
 
         # Create a [K] variable to hold the variances
-        variance = tf.Variable(tf.zeros([K], dtype=tf.float32))
+        log_variance = tf.Variable(tf.zeros([K], dtype=tf.float32))
         # Constrain the variance to [0, inf)
-        variance = tf.exp(variance)
+        variance = tf.exp(log_variance)
 
         # Create a [K] variable to hold the mixing coefficients
         mixes = tf.Variable(tf.ones([K], dtype=tf.float32) / K)
@@ -37,10 +37,11 @@ if __name__ == '__main__':
         # Summing over the outer dimension gives [B, K]
         squared_diff = tf.reduce_sum(tf.square(x - means), -1)
 
-        # The coefficient of the Gaussian
+        # The log of the coefficient of the Gaussian
         # 1 / (2 * pi * sigma_k ^ 2) ^ (D / 2)
+        # Use the following form to prevent overflow
         # Shape [K]
-        coefficient = tf.pow(2 * math.pi * variance, -D / 2.)
+        log_coefficient = -D / 2. * (tf.log(2 * math.pi) + log_variance)
 
         # The exponent of the Gaussian
         # -1 / (2 * sigma_k ^ 2) * (x - mu_k) ^ T * (x - mu_k) 
@@ -49,7 +50,7 @@ if __name__ == '__main__':
 
         # Calculate the log likelihood log(P(x|z=k))
         # Shape [B, K]
-        log_likelihood = tf.log(coefficient) + exponent
+        log_likelihood = log_coefficient + exponent
 
         # Calculate the mixed log likelihood log(P(x|z=k) * P(z=k)) = log(pi_k) + log_likelihood 
         # Shape [B, K]
@@ -63,7 +64,7 @@ if __name__ == '__main__':
 
         # Calculate the marginal log likelihood log(P(X))
         # Shape [B]
-        marginal_log_likelihood = tf.reduce_logsumexp(log_pi + log_likelihood, -1)
+        marginal_log_likelihood = tf.reduce_logsumexp(mixed_log_likelihood, -1)
 
         # Sum over all data points to determine the loss
         # Shape [1]
