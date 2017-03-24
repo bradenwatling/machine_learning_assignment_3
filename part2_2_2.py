@@ -86,11 +86,18 @@ if __name__ == '__main__':
             _, current_loss = sess.run([optimizer, loss], feed_dict={ x_in:data })
             losses.append(current_loss)
 
+        print()
+        print('K=' + str(K))
+
         print('Final loss: ' + str(losses[-1]))
 
         cluster_ids, counts = sess.run([clusters, cluster_counts], feed_dict={ x_in:data })
         for i in range(cluster_ids.size):
             print('Cluster ' + str(cluster_ids[i]) + ': ' + str(100. * counts[i] / B) + '%')
+
+        print("Learnt parameters")
+        print("  variances: " + str(sess.run(variance, feed_dict={ x_in:data })))
+        print("  means: " + str(means.eval(sess)))
 
         x = data[:, [0]]
         y = data[:, [1]]
