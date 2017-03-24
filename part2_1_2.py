@@ -32,7 +32,7 @@ if __name__ == '__main__':
         # Make x a [B, 1, D] tensor
         x = tf.expand_dims(x_in, 1)
 
-        # Take square of x - means and sum over outer dimension
+        # Compute (x - u_k)^T * (x - u_k)
         # [B, 1, D] - [K, D] = [B, K, D]
         # Summing over the outer dimension gives [B, K]
         squared_diff = tf.reduce_sum(tf.square(x - means), -1)
