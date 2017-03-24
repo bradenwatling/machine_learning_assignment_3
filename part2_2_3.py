@@ -104,6 +104,9 @@ if __name__ == '__main__':
         for i in range(cluster_ids.size):
             print('Cluster ' + str(cluster_ids[i]) + ': ' + str(100. * counts[i] / B) + '%')
 
+        print("Means: " + str(means.eval(sess)))
+        print("Variances: " + str(sess.run(variance, feed_dict={ x_in:data })))
+
         x = trainData[:, [0]]
         y = trainData[:, [1]]
         assignments = sess.run(cluster_assignments, feed_dict={ x_in:trainData })
