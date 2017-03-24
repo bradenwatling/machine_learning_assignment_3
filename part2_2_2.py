@@ -86,7 +86,7 @@ if __name__ == '__main__':
             _, current_loss = sess.run([optimizer, loss], feed_dict={ x_in:data })
             losses.append(current_loss)
 
-        print()
+        print
         print('K=' + str(K))
 
         print('Final loss: ' + str(losses[-1]))
