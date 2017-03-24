@@ -59,6 +59,10 @@ if __name__ == '__main__':
 
         print('Validation loss for k=' + str(K) + ': ' + str(validLoss))
 
+        cluster_ids, counts = sess.run([clusters, cluster_counts], feed_dict={ x_in:data })
+        for i in range(cluster_ids.size):
+            print('Cluster ' + str(cluster_ids[i]) + ': ' + str(100. * counts[i] / B) + '%')
+
         x = trainData[:, [0]]
         y = trainData[:, [1]]
         assignments = sess.run([cluster_assignments], feed_dict={ x_in:trainData })[0]

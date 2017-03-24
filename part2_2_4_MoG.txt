@@ -1,0 +1,97 @@
+Validation loss for k=1: 473902.0
+Cluster 0: 100.0%
+Validation loss for k=2: 405350.0
+Cluster 1: 70.0%
+Cluster 0: 30.0%
+Validation loss for k=3: 388180.0
+Cluster 1: 30.0%
+Cluster 0: 50.0%
+Cluster 2: 20.0%
+Validation loss for k=4: 288587.0
+Cluster 0: 20.0%
+Cluster 1: 30.0%
+Cluster 2: 20.0%
+Cluster 3: 30.0%
+Validation loss for k=5: 161935.0
+Cluster 1: 20.0%
+Cluster 3: 20.0%
+Cluster 4: 20.0%
+Cluster 2: 10.0%
+Cluster 0: 30.0%
+Validation loss for k=6: 161393.0
+Cluster 1: 20.0%
+Cluster 2: 20.0%
+Cluster 3: 20.0%
+Cluster 0: 10.0%
+Cluster 4: 14.67%
+Cluster 5: 15.33%
+Validation loss for k=7: 161948.0
+Cluster 0: 20.0%
+Cluster 1: 20.0%
+Cluster 3: 20.0%
+Cluster 5: 10.0%
+Cluster 4: 30.0%
+Validation loss for k=8: 161953.0
+Cluster 6: 20.0%
+Cluster 5: 20.0%
+Cluster 7: 19.96%
+Cluster 4: 10.0%
+Cluster 3: 30.0%
+Cluster 1: 0.04%
+Validation loss for k=9: 246655.0
+Cluster 3: 20.0%
+Cluster 0: 20.0%
+Cluster 8: 30.0%
+Cluster 4: 14.74%
+Cluster 6: 15.26%
+Validation loss for k=10: 161249.0
+Cluster 0: 10.15%
+Cluster 3: 9.85%
+Cluster 2: 20.0%
+Cluster 5: 11.59%
+Cluster 6: 10.0%
+Cluster 7: 30.0%
+Cluster 9: 8.4%
+Cluster 8: 0.01%
+Validation loss for k=11: 160749.0
+Cluster 3: 20.0%
+Cluster 9: 20.0%
+Cluster 10: 3.7%
+Cluster 6: 10.0%
+Cluster 8: 5.72%
+Cluster 2: 5.81%
+Cluster 4: 13.97%
+Cluster 1: 16.03%
+Cluster 5: 4.77%
+Validation loss for k=12: 161853.0
+Cluster 2: 20.0%
+Cluster 6: 20.0%
+Cluster 4: 18.12%
+Cluster 7: 10.0%
+Cluster 0: 30.0%
+Cluster 11: 1.88%
+Validation loss for k=13: 161421.0
+Cluster 5: 20.0%
+Cluster 7: 20.0%
+Cluster 10: 19.98%
+Cluster 11: 10.0%
+Cluster 6: 14.75%
+Cluster 12: 15.25%
+Cluster 1: 0.02%
+Validation loss for k=14: 161610.0
+Cluster 7: 20.0%
+Cluster 1: 20.0%
+Cluster 8: 11.47%
+Cluster 3: 10.0%
+Cluster 0: 29.99%
+Cluster 13: 8.26%
+Cluster 9: 0.27%
+Cluster 4: 0.01%
+Validation loss for k=15: 161106.0
+Cluster 10: 20.0%
+Cluster 5: 20.0%
+Cluster 8: 20.0%
+Cluster 2: 10.0%
+Cluster 9: 9.71%
+Cluster 13: 11.83%
+Cluster 0: 8.46%

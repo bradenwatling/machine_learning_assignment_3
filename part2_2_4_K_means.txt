@@ -1,0 +1,110 @@
+Validation loss for k=1: 335050.0
+Cluster 0: 100.0%
+Validation loss for k=2: 260795.0
+Cluster 0: 20.0%
+Cluster 1: 80.0%
+Validation loss for k=3: 192731.0
+Cluster 0: 50.0%
+Cluster 1: 20.0%
+Cluster 2: 30.0%
+Validation loss for k=4: 191393.0
+Cluster 2: 40.0%
+Cluster 1: 30.0%
+Cluster 0: 30.0%
+Validation loss for k=5: 150111.0
+Cluster 0: 50.0%
+Cluster 1: 20.0%
+Cluster 2: 10.77%
+Cluster 4: 10.0%
+Cluster 3: 9.23%
+Validation loss for k=6: 71810.6
+Cluster 1: 20.0%
+Cluster 3: 20.0%
+Cluster 4: 20.0%
+Cluster 0: 10.0%
+Cluster 2: 30.0%
+Validation loss for k=7: 123694.0
+Cluster 6: 30.0%
+Cluster 5: 20.0%
+Cluster 4: 20.0%
+Cluster 2: 30.0%
+Validation loss for k=8: 123690.0
+Cluster 5: 30.0%
+Cluster 2: 20.0%
+Cluster 7: 20.0%
+Cluster 0: 29.8%
+Cluster 6: 0.2%
+Validation loss for k=9: 142932.0
+Cluster 0: 40.0%
+Cluster 1: 5.92%
+Cluster 8: 10.0%
+Cluster 5: 7.35%
+Cluster 2: 4.59%
+Cluster 7: 12.95%
+Cluster 6: 12.46%
+Cluster 4: 6.73%
+Validation loss for k=10: 70407.2
+Cluster 1: 20.0%
+Cluster 2: 20.0%
+Cluster 7: 5.38%
+Cluster 9: 10.0%
+Cluster 6: 4.87%
+Cluster 3: 30.0%
+Cluster 8: 4.96%
+Cluster 5: 4.78%
+Cluster 0: 0.01%
+Validation loss for k=11: 70537.0
+Cluster 8: 20.0%
+Cluster 1: 9.52%
+Cluster 2: 7.37%
+Cluster 7: 10.0%
+Cluster 5: 6.3%
+Cluster 3: 10.48%
+Cluster 0: 29.87%
+Cluster 10: 6.33%
+Cluster 4: 0.13%
+Validation loss for k=12: 122490.0
+Cluster 7: 20.0%
+Cluster 4: 20.0%
+Cluster 2: 5.46%
+Cluster 11: 40.0%
+Cluster 6: 4.56%
+Cluster 1: 5.07%
+Cluster 10: 4.85%
+Cluster 9: 0.02%
+Cluster 3: 0.04%
+Validation loss for k=13: 70617.1
+Cluster 10: 20.0%
+Cluster 3: 20.0%
+Cluster 1: 8.32%
+Cluster 0: 10.0%
+Cluster 5: 26.27%
+Cluster 2: 6.46%
+Cluster 9: 3.73%
+Cluster 11: 5.21%
+Cluster 4: 0.01%
+Validation loss for k=14: 70074.1
+Cluster 6: 20.0%
+Cluster 11: 20.0%
+Cluster 9: 7.24%
+Cluster 4: 10.0%
+Cluster 2: 14.0%
+Cluster 0: 14.14%
+Cluster 7: 6.04%
+Cluster 12: 1.84%
+Cluster 3: 6.62%
+Cluster 1: 0.1%
+Cluster 8: 0.02%
+Validation loss for k=15: 70506.3
+Cluster 1: 20.0%
+Cluster 9: 10.1%
+Cluster 4: 7.49%
+Cluster 14: 10.0%
+Cluster 3: 9.9%
+Cluster 12: 30.0%
+Cluster 6: 5.57%
+Cluster 2: 6.29%
+Cluster 11: 0.52%
+Cluster 13: 0.02%
+Cluster 5: 0.11%
+
