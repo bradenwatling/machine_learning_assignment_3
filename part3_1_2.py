@@ -9,7 +9,7 @@ def visualize(w, rows):
     plt.figure()
 
     for i in range(rows):
-        plot = plt.subplot(math.ceil(rows / 2.0) + 1, math.ceil(rows / 2.0) + 1, i + 1)
+        plot = plt.subplot(1, rows, i + 1)
         plt.axis('off')
         # From piazza
         plt.imshow(w[i], cmap=plt.cm.gray, vmin=0.5 * w.min(), vmax=0.5 * w.max())
